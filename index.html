@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengumuman Kelulusan SMK Negeri 5 Kepahiang</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e0f7fa;
+      color: #0d47a1;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      max-width: 480px;
+      margin: 5vh auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 { font-size: 1.4em; }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    button {
+      background-color: #0d47a1;
+      color: white;
+      font-weight: bold;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f1f8e9;
+      border: 1px solid #aed581;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.imgur.com/gCpaQjN.png" alt="Logo Sekolah" style="max-width:80px;">
+    <h1>Pengumuman Kelulusan<br>SMK Negeri 5 Kepahiang</h1>
+    <p>Masukkan TOKEN PENDAFTARAN Anda:</p>
+    <input type="text" id="token" placeholder="Contoh: SMK509072501">
+    <button onclick="cekKelulusan()">Cek Kelulusan</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function cekKelulusan() {
+      const token = document.getElementById('token').value.trim();
+      const result = document.getElementById('result');
+      result.style.display = 'none';
+
+      if (!token) {
+        alert("Silakan masukkan TOKEN PENDAFTARAN terlebih dahulu.");
+        return;
+      }
+
+      result.innerHTML = "Memeriksa data...";
+      result.style.display = 'block';
+
+      try {
+        const res = await fetch("https://script.google.com/macros/s/AKfycbziMfY2D2T4TStiZoBY6wE2_NfoUXO9l9k6hYQbGwpYy9cNvlJy7lhWi05cVf7ZtVmJ/exec?token=" + token);
+        const data = await res.json();
+
+        if (!data || !data.nama) {
+          result.innerHTML = "<span style='color:red;font-weight:bold;'>Data tidak ditemukan. Periksa TOKEN Anda.</span>";
+        } else {
+          const warna = data.status.toLowerCase() === 'lulus' ? 'green' : 'red';
+          result.innerHTML = `
+            <strong>🎓 BUKTI KELULUSAN</strong><br><br>
+            <b>Nama:</b> ${data.nama}<br>
+            <b>NISN:</b> ${data.nisn}<br>
+            <b>Asal Sekolah:</b> ${data.asal}<br>
+            <b>Diterima di:</b> ${data.diterima}<br>
+            <b>Status:</b> <span style="color:${warna};font-weight:bold;">${data.status}</span>
+          `;
+        }
+      } catch (e) {
+        result.innerHTML = "<span style='color:red;font-weight:bold;'>Terjadi kesalahan saat menghubungi server.</span>";
+      }
+    }
+  </script>
+</body>
+</html>
