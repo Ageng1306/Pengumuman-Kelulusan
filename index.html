@@ -2,153 +2,45 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pengumuman Kelulusan SPMB 
-    SMK 5 Kepahiang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pengumuman Kelulusan SPMB - SMK Negeri 5 Kepahiang</title>
   <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: #e0f7fa;
-      color: #0d47a1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 420px;
-      width: 90%;
-      background: #fff;
-      margin: 30px auto;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background-color: #e0f7fa;
       text-align: center;
     }
-    img.logo {
-      max-width: 80px;
-      display: block;
-      margin: 20px auto 10px;
+
+    header {
+      padding: 30px 20px 10px;
+      background-color: #01579b;
+      color: white;
     }
-    h2 {
-      margin: 0 0 10px;
-    }
-    input[type="text"], button {
+
+    iframe {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      font-size: 16px;
+      height: 100vh;
       border: none;
     }
-    #cekBtn { background-color: #0d47a1; color: #fff; }
-    #keluarBtn { background-color: #d32f2f; color: #fff; display: none; }
-    #result {
-      display: none;
-      margin-top: 20px;
-      background: #e8f5e9;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    #pesanError {
-      display: none;
-      color: red;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 10px;
-    }
+
     footer {
       font-size: 12px;
-      text-align: center;
-      margin-top: 30px;
+      color: #555;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://i.imgur.com/gCpaQjN.png" alt="Logo Sekolah" class="logo" />
-    <h2>SMK Negeri 5 Kepahiang</h2> <h2>Pengumuman Kelulusan SPMB</h2>
 
-    <div id="formInput">
-      <p>Masukkan TOKEN PENDAFTARAN Anda</p>
-      <input type="text" id="token" placeholder="Contoh: SMK509072501" />
-      <button id="cekBtn" onclick="checkGraduation()">Cek Kelulusan</button>
-    </div>
+  <header>
+    <h1>SMK Negeri 5 Kepahiang</h1>
+    <p>Pengumuman Kelulusan SPMB 2025</p>
+  </header>
 
-    <div id="pesanError"></div>
-    <div id="loading" style="display:none; text-align:center;">Memeriksa data...</div>
-    <div id="result"></div>
-    <button id="keluarBtn" onclick="keluar()">Keluar</button>
-  </div>
+  <iframe src="https://script.google.com/macros/s/AKfycbzaT7c87zl7VnmYyrzw5XkUSScYKsxo2f1nhMWQH4gE-8daLAK4kzODb_nGGWGo8mm5/exec"></iframe>
 
   <footer>&copy; 2025 - SMK Negeri 5 Kepahiang</footer>
 
-  <script>
-    function checkGraduation() {
-      const token = document.getElementById("token").value.trim();
-      const loading = document.getElementById("loading");
-      const resultDiv = document.getElementById("result");
-      const cekBtn = document.getElementById("cekBtn");
-      const keluarBtn = document.getElementById("keluarBtn");
-      const pesanError = document.getElementById("pesanError");
-      const formInput = document.getElementById("formInput");
-
-      if (!token) {
-        pesanError.textContent = "Silakan masukkan TOKEN PENDAFTARAN terlebih dahulu.";
-        pesanError.style.display = "block";
-        return;
-      } else {
-        pesanError.style.display = "none";
-      }
-
-      loading.style.display = "block";
-      resultDiv.style.display = "none";
-      cekBtn.style.display = "none";
-
-      google.script.run.withSuccessHandler(showResult).getDataByToken(token);
-    }
-
-    function showResult(data) {
-      const resultDiv = document.getElementById("result");
-      const loading = document.getElementById("loading");
-      const keluarBtn = document.getElementById("keluarBtn");
-      const formInput = document.getElementById("formInput");
-
-      loading.style.display = "none";
-
-      if (!data) {
-        resultDiv.innerHTML = "<p style='color:red; font-weight:bold;'>Data tidak ditemukan. Pastikan TOKEN benar.</p>";
-        resultDiv.style.display = "block";
-        keluarBtn.style.display = "block";
-        return;
-      }
-
-      formInput.style.display = "none";
-
-      const statusLulus = data.status.trim().toLowerCase() === "lulus";
-      resultDiv.innerHTML = `
-        <h3 style="text-align:center;">🎓 BUKTI KELULUSAN</h3>
-        <p><strong>Nama:</strong> ${data.nama}</p>
-        <p><strong>NISN:</strong> ${data.nisn}</p>
-        <p><strong>Asal Sekolah:</strong> ${data.asal}</p>
-        <p><strong>Di Jurusan:</strong> ${data.diterima}</p>
-        <p><strong>Status:</strong> <span style="color:${statusLulus ? 'green' : 'red'}; font-weight:bold;">${data.status}</span></p>
-      `;
-      resultDiv.style.display = "block";
-      keluarBtn.style.display = "block";
-    }
-
-    function keluar() {
-      document.getElementById("token").value = "";
-      document.getElementById("result").style.display = "none";
-      document.getElementById("loading").style.display = "none";
-      document.getElementById("keluarBtn").style.display = "none";
-      document.getElementById("cekBtn").style.display = "block";
-      document.getElementById("pesanError").style.display = "none";
-      document.getElementById("formInput").style.display = "block";
-    }
-  </script>
 </body>
 </html>
